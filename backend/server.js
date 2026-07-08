@@ -1,99 +1,139 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
-const morgan = require('morgan');
-const path = require('path');
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
+const morgan = require("morgan");
+const path = require("path");
 
-const connectDB = require('./config/db');
-const apiRoutes = require('./routes/api');
+const connectDB = require("./config/db");
+const apiRoutes = require("./routes/api");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Security Middleware
-app.use(helmet({
-  contentSecurityPolicy: false
-}));
+// ----------------------
+// Security
+// ----------------------
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  })
+);
 
-// CORS Configuration
+// ----------------------
+// CORS
+// ----------------------
 const allowedOrigins = [
-  'http://localhost:3000',
-  'http://localhost:5173',
-  process.env.FRONTEND_URL
+  "http://localhost:3000",
+  "http://localhost:5173",
+  process.env.FRONTEND_URL,
 ].filter(Boolean);
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV !== 'production') {
-      return callback(null, true);
-    }
-    return callback(new Error('CORS Policy block: Origin not allowed'), false);
-  },
-  credentials: true
-}));
+app.use(
+  cors({
+    origin(origin, callback) {
+      // Allow Postman, curl, server-to-server requests
+      if (!origin) return callback(null, true);
 
-// Request parsers
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      console.log("Blocked Origin:", origin);
+
+      return callback(new Error("Origin not allowed by CORS"));
+    },
+    credentials: true,
+  })
+);
+
+// Handle preflight requests
+app.options("*", cors());
+
+// ----------------------
+// Parsers
+// ----------------------
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(morgan('dev'));
 
-// Rate Limiting
+// ----------------------
+// Logger
+// ----------------------
+app.use(morgan("dev"));
+
+// ----------------------
+// Rate Limiter
+// ----------------------
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
-  message: {
-    success: false,
-    message: 'Too many requests from this IP, please try again after 15 minutes.'
-  },
-  standardHeaders: true,
-  legacyHeaders: false,
 });
-app.use('/api/', limiter);
 
-// Serve static assets if production
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../dist')));
+app.use("/api", limiter);
+
+// ----------------------
+// Static Files
+// ----------------------
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../dist")));
 }
 
-// Set database connection flag
+// ----------------------
+// Database
+// ----------------------
 let dbConnected = false;
 
-// Connect Database
-connectDB().then(conn => {
-  if (conn) {
-    dbConnected = true;
-  }
-  app.set('dbConnected', dbConnected);
-}).catch(err => {
-  console.error('Mongoose initial connect error:', err);
-  app.set('dbConnected', false);
-});
+connectDB()
+  .then((conn) => {
+    dbConnected = !!conn;
+    app.set("dbConnected", dbConnected);
+    console.log("Database:", dbConnected ? "Connected" : "Disconnected");
+  })
+  .catch((err) => {
+    console.error(err);
+    app.set("dbConnected", false);
+  });
 
+// ----------------------
 // Routes
-app.use('/api', apiRoutes);
+// ----------------------
+app.use("/api", apiRoutes);
 
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({
-    status: 'UP',
-    database: dbConnected ? 'Connected' : 'Offline (Simulated Fallback Mode)',
-    uptime: process.uptime()
+// ----------------------
+// Health Check
+// ----------------------
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "Portfolio Backend Running 🚀",
   });
 });
 
-// Error handling middleware
+app.get("/health", (req, res) => {
+  res.json({
+    success: true,
+    database: dbConnected,
+    uptime: process.uptime(),
+  });
+});
+
+// ----------------------
+// Error Handler
+// ----------------------
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error(err);
+
   res.status(err.status || 500).json({
     success: false,
-    message: err.message || 'Internal Server Error'
+    message: err.message || "Internal Server Error",
   });
 });
 
+// ----------------------
+// Server
+// ----------------------
 app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`Server running on ${PORT}`);
+  console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
 });
