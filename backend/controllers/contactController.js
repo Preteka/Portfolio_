@@ -9,20 +9,11 @@ const getTransporter = () => {
   if (process.env.SMTP_USER && process.env.SMTP_PASS) {
     // Real Gmail transporter using App Password
     return nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 587,
-      secure: false,       // STARTTLS
-      requireTLS: true,
+      service: "gmail",
       auth: {
-        user: process.env.SMTP_USER,   // your Gmail address
-        pass: process.env.SMTP_PASS,   // your Gmail App Password (16 chars)
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
       },
-      tls: {
-        rejectUnauthorized: false,
-      },
-      connectionTimeout: 30000,
-      greetingTimeout: 30000,
-      socketTimeout: 30000,
     });
   }
 
@@ -68,6 +59,8 @@ const sendContactMessage = async (req, res) => {
     }
 
     const transporter = getTransporter();
+    await transporter.verify();
+    console.log("✅ SMTP Connected Successfully");
 
     // ── Email 1: Notify YOU (portfolio owner) ─────────────────
     const ownerMailOptions = {
