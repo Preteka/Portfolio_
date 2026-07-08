@@ -9,7 +9,7 @@ export const publications = [
     journal: 'International Conference on Advance Computational Intelligence, 2025',
     abstract: "This study combines real-time lifestyle data with machine learning algorithms like Random Forest, Decision Tree, XGBoost, Extra Trees, and Ensemble approaches to determine main causes of hair loss. We leverage Generative Adversarial Networks (GANs) for data augmentation and SMOTE for balancing the dataset, facilitating early detection, increasing predictive accuracy, and permitting tailored therapy suggestions.",
     tech: ['Python', 'Machine Learning', 'XGBoost', 'GANs', 'SMOTE'],
-    pdf: '/src/sections/hairloss.pdf'
+    pdf: '/hairloss.pdf'
   },
   {
     title: 'Exploring Machine Learning Techniques for Stroke Prediction and Prevention',
@@ -17,7 +17,7 @@ export const publications = [
     journal: 'Computer Research and Development, Volume 24 Issue 11, 2024 (Scopus & UGC Approved Journal)',
     abstract: 'Investigates the effectiveness of various machine learning classifiers for stroke prediction and prevention using a Kaggle dataset. Classifiers including Random Forest and Decision Trees achieved accuracies of 99.63% and 100%, significantly outperforming regression-based approaches. Feature selection and data balancing strategies were applied to maximize model performance.',
     tech: ['Python', 'Random Forest', 'SVM', 'Gradient Boosting', 'Neural Networks'],
-    pdf: '/src/sections/stroke.pdf'
+    pdf: '/stroke.pdf'
   },
   {
     title: 'IoT Based Agricultural Monitoring and Alert System',
@@ -25,7 +25,7 @@ export const publications = [
     journal: '4th International Conference on Sentiment Analysis and Deep Learning (ICSADL 2025)',
     abstract: 'Implements an IoT-based Agricultural Monitoring & Alert System (AMAS) integrating multiple sensors to continuously monitor soil moisture, soil temperature, water levels, irrigation pump status, and water quality. The system enables farmers to make well-informed decisions, maximize resources, and enhance crop output in real time through precision farming practices.',
     tech: ['IoT', 'Sensors', 'Python', 'Real-time Monitoring'],
-    pdf: '/src/sections/iot.pdf'
+    pdf: '/iot.pdf'
   }
 ];
 

@@ -3,15 +3,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Award, X } from 'lucide-react';
 
 export const certs = [
-  { name: 'Data Fundamentals', issuer: 'IBM SkillBuild', date: '2025', image: '/src/sections/ibm.png' },
-  { name: 'AWS Educate Introduction to Cloud 101', issuer: 'AWS', date: '2025', image: '/src/sections/aws.png' },
-  { name: 'MySQL Implementation Certificated Associate', issuer: 'Oracle', date: '2025', image: '/src/sections/oracle.png' },
-  { name: 'Data Science for Engineers', issuer: 'NPTEL', date: '2025', image: '/src/sections/nptel.png' },
+  { name: 'Data Fundamentals', issuer: 'IBM SkillBuild', date: '2025', image: '/ibm.png' },
+  { name: 'AWS Educate Introduction to Cloud 101', issuer: 'AWS', date: '2025', image: '/aws.png' },
+  { name: 'MySQL Implementation Certificated Associate', issuer: 'Oracle', date: '2025', image: '/oracle.png' },
+  { name: 'Data Science for Engineers', issuer: 'NPTEL', date: '2025', image: '/nptel.png' },
   { name: 'GitHub Foundations', issuer: 'GitHub', date: '2025' },
-  { name: 'Databricks Accredited Generarative AI Fundamentals', issuer: 'Databricks Academy', date: '2025', image: '/src/sections/gen ai.png' },
-  { name: 'Start the UX Design Process: Empathize, Define and Ideate', issuer: 'Coursera', date: '2025', image: '/src/sections/ux design.png' },
-  { name: 'Fundamentals of User Experience(UX) Design', issuer: 'Coursera', date: '2025', image: '/src/sections/foundation.png' },
-  { name: 'Digital Skills: User Experience', issuer: 'Accenture', date: '2025', image: '/src/sections/accenture.png' }
+  { name: 'Databricks Accredited Generarative AI Fundamentals', issuer: 'Databricks Academy', date: '2025', image: '/genai.png' },
+  { name: 'Start the UX Design Process: Empathize, Define and Ideate', issuer: 'Coursera', date: '2025', image: '/uxdesign.png' },
+  { name: 'Fundamentals of User Experience(UX) Design', issuer: 'Coursera', date: '2025', image: '/foundation.png' },
+  { name: 'Digital Skills: User Experience', issuer: 'Accenture', date: '2025', image: '/accenture.png' }
 ];
 
 const Certifications = () => {
