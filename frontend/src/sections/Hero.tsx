@@ -177,7 +177,7 @@ const Hero = () => {
             </button>
 
             <a
-              href="/resume.pdf"
+              href="/resumee.pdf"
               download="Preteka_AT_Resume.pdf"
               className="w-full sm:w-auto px-8 py-3.5 bg-white/5 border border-white/10 text-white font-semibold rounded-full hover:bg-white/10 active:scale-95 transition-all text-sm flex items-center justify-center gap-2 cursor-pointer"
             >
